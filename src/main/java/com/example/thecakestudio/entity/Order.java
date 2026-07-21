@@ -1,5 +1,6 @@
 package com.example.thecakestudio.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -20,7 +21,7 @@ import jakarta.persistence.Table;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
@@ -45,6 +46,12 @@ public class Order {
     private String province;
     
     private String postalCode;
+    
+    private LocalDate pickupDate;
+
+    private String pickupTime;
+
+    private String notes;
 
 	public Integer getId() {
 		return id;
@@ -132,6 +139,30 @@ public class Order {
 
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
+	}
+
+	public LocalDate getPickupDate() {
+		return pickupDate;
+	}
+
+	public void setPickupDate(LocalDate pickupDate) {
+		this.pickupDate = pickupDate;
+	}
+
+	public String getPickupTime() {
+		return pickupTime;
+	}
+
+	public void setPickupTime(String pickupTime) {
+		this.pickupTime = pickupTime;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 

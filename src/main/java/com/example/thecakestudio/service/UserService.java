@@ -85,7 +85,7 @@ public class UserService {
         dto.setPostalCode(user.getPostalCode());
         return dto;
     }
-
+	
 	public ProfileDTO updateProfile(ProfileDTO dto) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

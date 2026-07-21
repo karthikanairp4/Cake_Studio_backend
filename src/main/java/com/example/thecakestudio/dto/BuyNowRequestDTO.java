@@ -1,11 +1,19 @@
 package com.example.thecakestudio.dto;
 
+import java.time.LocalDate;
+
 public class BuyNowRequestDTO extends CartItemDTO {
 
     private String street;
     private String city;
     private String province;
     private String postalCode;
+    
+    private LocalDate pickupDate;
+
+    private String pickupTime;
+
+    private String notes;
 
     public String getStreet() {
         return street;
@@ -38,5 +46,29 @@ public class BuyNowRequestDTO extends CartItemDTO {
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
+
+	public LocalDate getPickupDate() {
+		return pickupDate;
+	}
+
+	public void setPickupDate(LocalDate pickupDate) {
+		this.pickupDate = pickupDate;
+	}
+
+	public String getPickupTime() {
+		return pickupTime;
+	}
+
+	public void setPickupTime(String pickupTime) {
+		this.pickupTime = pickupTime;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
 
 }

@@ -34,6 +34,9 @@ public class CartItemService {
 	CakeOptionsRepo optionsRepo;
 
 	public CartItem addToCart(CartItemDTO cartDTO) {
+		System.out.println("Sponge ID: " + cartDTO.getSpongeId());
+		System.out.println("Filling ID: " + cartDTO.getFillingId());
+		System.out.println("Frosting ID: " + cartDTO.getFrostingId());
 		CartItem item = new CartItem();
 		User user = userRepo.findById(cartDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
 		Cakes cake = cakesRepo.findById(cartDTO.getCakeId()).orElseThrow(() -> new RuntimeException("Cake not found"));

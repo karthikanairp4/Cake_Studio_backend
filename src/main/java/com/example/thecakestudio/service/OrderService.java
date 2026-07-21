@@ -70,6 +70,9 @@ public class OrderService {
 		order.setStatus(OrderStatus.PENDING);
 		order.setPaymentStatus(PaymentStatus.SUCCESS);
 		order.setPaymentMethod("CARD");
+		order.setPickupDate(checkoutDTO.getPickupDate());
+		order.setPickupTime(checkoutDTO.getPickupTime());
+		order.setNotes(checkoutDTO.getNotes());
 		order = orderRepo.save(order);
 
 		double grandTotal = 0;
@@ -139,6 +142,9 @@ public class OrderService {
 		order.setPostalCode(dto.getPostalCode());
 		order.setStatus(OrderStatus.PENDING);
 		order.setPaymentStatus(PaymentStatus.SUCCESS);
+//		order.setPickupDate(dto.getPickupDate());
+//		order.setPickupTime(dto.getPickupTime());
+//		order.setNotes(dto.getNotes());
 		order = orderRepo.save(order);
 
 		OrderItem item = new OrderItem();
