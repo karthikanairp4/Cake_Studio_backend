@@ -42,7 +42,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     	String token = jwtUtil.generateToken(user);
 
     	String redirectUrl =
-    	        "http://localhost:5173/oauth-success"
+    	        "https://paprika-bakes.netlify.app/oauth-success"
     	        + "?token=" + token
     	        + "&userId=" + user.getId()
     	        + "&email=" + URLEncoder.encode(user.getEmail(), StandardCharsets.UTF_8);
