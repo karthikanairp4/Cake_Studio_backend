@@ -2,7 +2,10 @@ package com.example.thecakestudio.replository;
 
 import java.util.List;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.thecakestudio.entity.Cakes;
@@ -14,5 +17,13 @@ public interface CakeRepo extends JpaRepository<Cakes, Integer> {
 	List<Cakes> findAll();
 
 	List<Cakes> findAllByCategory(CakeCategory category);
+
+	@Query("""
+			SELECT c
+			FROM Cakes c
+			WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%'))
+			ORDER BY c.name
+			""")
+			List<Cakes> searchCakes(@Param("keyword") String keyword);
 
 }

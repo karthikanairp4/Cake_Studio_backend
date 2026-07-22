@@ -2,6 +2,7 @@ package com.example.thecakestudio.service;
 
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,10 @@ public class CakeService {
 	public Cakes findCakeById(int id) {
 		Cakes cakeById = cakeRepo.findById(id).orElse(null);
 		return cakeById;
+	}
+
+	public List<Cakes> searchCakes(String keyword) {
+	    return cakeRepo.searchCakes(keyword);
 	}
 
 }
