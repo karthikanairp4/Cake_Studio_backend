@@ -16,20 +16,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
-//	    SecurityConfig tells Spring Security: 
+//	    SecurityConfig tells Spring Security:
 //		Which URLs are public?
 //		Which URLs require login?
 //		Are we using sessions or JWT?
 //		Which authentication mechanism should be used?
 //
 //		It is the central configuration class for security.
-	
+
 	@Autowired
 	private JwtFilter jwtFilter;
-	
+
 	@Autowired
 	private OAuth2SuccessHandler oauth2SuccessHandler;
-	
+
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -53,13 +53,14 @@ public class SecurityConfig {
                                 "/findCakeById/**",
                                 "/images/**",
                                 "/oauth2/**",
-                                "/login/**"
+                                "/login/**",
+                                "/search/**"
                         ).permitAll()
 
                         .anyRequest().authenticated()
                 )
-        
-        
+
+
                 .oauth2Login(oauth ->
                 oauth.successHandler(oauth2SuccessHandler)
         );

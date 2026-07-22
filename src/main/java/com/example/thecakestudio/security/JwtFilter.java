@@ -27,13 +27,13 @@ public class JwtFilter extends OncePerRequestFilter {
     private UserServiceImpl userService;
 
     @Override
-    
+
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
-    	
+
     	String path = request.getServletPath();
 
     	if (path.startsWith("/auth")
@@ -41,7 +41,8 @@ public class JwtFilter extends OncePerRequestFilter {
     	        || path.startsWith("/login")
     	        || path.startsWith("/images")
     	        || path.startsWith("/getCakesByCategory")
-    	        || path.startsWith("/findCakeById")) {
+    	        || path.startsWith("/findCakeById")
+    	        || path.startsWith("/search")) {
 
     	    filterChain.doFilter(request, response);
     	    return;
