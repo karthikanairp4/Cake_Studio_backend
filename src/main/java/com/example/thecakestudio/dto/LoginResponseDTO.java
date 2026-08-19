@@ -1,5 +1,7 @@
 package com.example.thecakestudio.dto;
 
+import com.example.thecakestudio.enums.Role;
+
 public class LoginResponseDTO {
 
 	private String token;
@@ -7,12 +9,16 @@ public class LoginResponseDTO {
 	private Integer userId;
 
 	private String email;
+	
+	private Role role;
 
-//	public LoginResponseDTO(String token, Integer userId, String email) {
-//		this.token = token;
-//		this.userId = userId;
-//		this.email = email;
-//	}
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	public String getToken() {
 		return token;

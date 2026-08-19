@@ -1,5 +1,6 @@
 package com.example.thecakestudio.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.List;
@@ -142,9 +143,9 @@ public class OrderService {
 		order.setPostalCode(dto.getPostalCode());
 		order.setStatus(OrderStatus.PENDING);
 		order.setPaymentStatus(PaymentStatus.SUCCESS);
-//		order.setPickupDate(dto.getPickupDate());
-//		order.setPickupTime(dto.getPickupTime());
-//		order.setNotes(dto.getNotes());
+		order.setPickupDate(dto.getPickupDate());
+		order.setPickupTime(dto.getPickupTime());
+		order.setNotes(dto.getNotes());
 		order = orderRepo.save(order);
 
 		OrderItem item = new OrderItem();
@@ -185,6 +186,49 @@ public class OrderService {
 	        throw new RuntimeException("Unauthorized");
 	    }
 	    return order;
+	}
+
+	public Order cancelOrder(Integer orderId) {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String email = authentication.getName();
+	    User user = userRepo.findByEmail(email);
+	    Order order = orderRepo.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+
+	    // Make sure the order belongs to this customer
+	    if (!order.getUser().getId().equals(user.getId())) {
+	        throw new RuntimeException("Unauthorized");
+	    }
+
+	    // Already cancelled
+	    if (order.getStatus() == OrderStatus.CANCELLED) {
+	        throw new RuntimeException("Order is already cancelled");
+	    }
+
+	    // Already completed
+	    if (order.getStatus() == OrderStatus.COMPLETED) {
+	        throw new RuntimeException("Completed orders cannot be cancelled");
+	    }
+
+	    // Pickup date is required
+	    if (order.getPickupDate() == null) {
+	        throw new RuntimeException(
+	                "Order cannot be cancelled because pickup date is not available"
+	        );
+	    }
+
+	    LocalDate today = LocalDate.now();
+	    LocalDate cancellationDeadline = order.getPickupDate().minusDays(2);
+
+	    // Cancellation deadline has passed
+	    if (today.isAfter(cancellationDeadline)) {
+	        throw new RuntimeException(
+	                "This order can no longer be cancelled. " +
+	                "Orders must be cancelled at least 2 days before pickup."
+	        );
+	    }
+
+	    order.setStatus(OrderStatus.CANCELLED);
+	    return orderRepo.save(order);
 	}
 
 }

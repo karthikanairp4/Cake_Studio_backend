@@ -43,6 +43,7 @@ public class UserController {
 		responseDTO.setToken(token);
 		responseDTO.setUserId(user.getId());
 		responseDTO.setEmail(user.getEmail());
+		responseDTO.setRole(user.getRole());
 		
 		return responseDTO;
 	}

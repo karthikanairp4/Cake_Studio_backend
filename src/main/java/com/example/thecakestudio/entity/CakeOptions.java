@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 public class CakeOptions {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
 	private String name;
@@ -26,6 +26,16 @@ public class CakeOptions {
 	private double price;
 	
 	private String img;
+	
+	private boolean active = true;
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	public int getId() {
 		return id;

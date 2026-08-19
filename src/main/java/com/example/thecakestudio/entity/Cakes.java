@@ -13,8 +13,8 @@ import jakarta.persistence.Id;
 public class Cakes {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer id;
 	
 	private String name;
 	
@@ -26,6 +26,16 @@ public class Cakes {
 	
 	@Enumerated(EnumType.STRING)
 	CakeCategory category;
+	
+	private boolean active = true;
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	public int getId() {
 		return id;

@@ -24,10 +24,36 @@ public class CakeOptionsService {
 
 	public Map<String, Object> getAllOptions() {
 		Map<String, Object> response = new HashMap<>();
-		response.put("sponges", optionsRepo.findByTypeOrderByPriceAsc(OptionType.SPONGE));
-		response.put("fillings", optionsRepo.findByTypeOrderByPriceAsc(OptionType.FILLING));
-		response.put("frostings", optionsRepo.findByTypeOrderByPriceAsc(OptionType.FROSTING));
+		response.put("sponges", optionsRepo.findByTypeAndActiveTrue(OptionType.SPONGE));
+		response.put("fillings", optionsRepo.findByTypeAndActiveTrue(OptionType.FILLING));
+		response.put("frostings", optionsRepo.findByTypeAndActiveTrue(OptionType.FROSTING));
 		return response;
 	}
+
+	public List<CakeOptions> getAllOptionsForAdmin() {
+		return optionsRepo.findAll();
+	}
+
+	public CakeOptions addOption(CakeOptions option) {
+		return optionsRepo.save(option);
+	}
+
+	public CakeOptions updateOption(Integer id, CakeOptions updatedOption) {
+		CakeOptions option = optionsRepo.findById(id).orElseThrow(() -> new RuntimeException("Cake option not found"));
+		option.setName(updatedOption.getName());
+		option.setType(updatedOption.getType());
+		option.setPrice(updatedOption.getPrice());
+		option.setImg(updatedOption.getImg());
+
+		return optionsRepo.save(option);
+	}
+
+	public CakeOptions updateOptionStatus(Integer id, boolean active) {
+		CakeOptions option = optionsRepo.findById(id).orElseThrow(() -> new RuntimeException("Cake option not found"));
+		option.setActive(active);
+
+		return optionsRepo.save(option);
+	}
+
 
 }

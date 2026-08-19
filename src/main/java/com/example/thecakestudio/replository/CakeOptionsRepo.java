@@ -14,4 +14,7 @@ public interface CakeOptionsRepo extends JpaRepository<CakeOptions, Integer> {
 
 	List<CakeOptions> findByTypeOrderByPriceAsc(OptionType sponge);
 
+	List<CakeOptions> findByActiveTrue();
+
+	List<CakeOptions> findByTypeAndActiveTrue(OptionType type);
 }

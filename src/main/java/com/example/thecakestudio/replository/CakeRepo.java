@@ -25,5 +25,7 @@ public interface CakeRepo extends JpaRepository<Cakes, Integer> {
 			ORDER BY c.name
 			""")
 			List<Cakes> searchCakes(@Param("keyword") String keyword);
+	
+	List<Cakes> findByActiveTrue();
 
 }

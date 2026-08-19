@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.thecakestudio.dto.UserDTO;
 import com.example.thecakestudio.entity.User;
+import com.example.thecakestudio.enums.Role;
 
 @Repository
 public interface UserRepo extends JpaRepository<User, Integer>{
@@ -12,4 +13,6 @@ public interface UserRepo extends JpaRepository<User, Integer>{
 	boolean existsByEmail(String email);
 
 	User findByEmail(String email);
+
+	long countByRole(Role customer);
 }
