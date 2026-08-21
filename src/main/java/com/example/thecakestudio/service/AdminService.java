@@ -1,6 +1,7 @@
 package com.example.thecakestudio.service;
 
 import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,6 +33,12 @@ public class AdminService {
 	
 	@Autowired
 	private OrderItemRepo orderItemRepo;
+	
+	@Autowired
+	private AIService aiService;
+	
+	@Autowired
+	PDFService pdfService;
 
 	public AdminDashboardDTO getDashboardStats() {
 		LocalDate today = LocalDate.now();
@@ -133,7 +140,7 @@ public class AdminService {
 	    );
 	}
 	
-	public AdminAIReportDTO generateDailyReport(LocalDate date) {
+	public AdminAIReportDTO generateDailyReportData(LocalDate date) {
 		LocalDateTime start = date.atStartOfDay();
 		LocalDateTime end = date.plusDays(1).atStartOfDay();
 		long totalOrders = orderRepo.countDailyOrders(start, end);
@@ -167,5 +174,13 @@ public class AdminService {
 				cancelledOrders, averageOrderValue, topSellingCakes);
 	}
 	
+	public byte[] generateDailyReportPdf(LocalDate date) {
+		// Get the actual sales data
+		AdminAIReportDTO report = generateDailyReportData(date);
+		// Send that data to Gemini
+		String aiAnalysis = aiService.generateReportInsights(report);
+		// Generate the PDF
+		return pdfService.generateDailySalesReport(date, report, aiAnalysis);
+	}
 	
 }

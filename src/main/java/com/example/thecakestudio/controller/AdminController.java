@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -102,13 +105,5 @@ public class AdminController {
 		return cakeService.updateCake(id, cake);
 	}
 	
-	@GetMapping("/admin/ai/report")
-	public AdminAIReportDTO getAIReport() {
-	    return adminService.getAIReport();
-	}
 	
-	@GetMapping("/admin/ai/daily-report")
-	public AdminAIReportDTO getDailyReport(@RequestParam LocalDate date) {
-		return adminService.generateDailyReport(date);
-	}
 }

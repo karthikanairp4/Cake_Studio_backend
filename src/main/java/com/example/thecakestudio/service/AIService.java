@@ -13,63 +13,67 @@ import jakarta.annotation.PostConstruct;
 public class AIService {
 
 	private Client client;
-	
+
 	@Value("${gemini_api_key}")
 	private String apiKey;
-	
+
 	@PostConstruct
 	public void init() {
-		this.client = Client.builder()
-                .apiKey(apiKey)
-                .build();
+		this.client = Client.builder().apiKey(apiKey).build();
 	}
 
+	public String generateReportInsights(AdminAIReportDTO report) {
+		String prompt = """
+				You are an AI business analyst for a small bakery called The Cake Studio.
 
-    public String generateReportInsights(AdminAIReportDTO report) {
-        String prompt = """
-                You are an AI business analyst for a small bakery called The Cake Studio.
+				Analyze the following daily sales data and create a concise daily sales analysis
+				for the bakery administrator.
 
-                Analyze the following sales data and provide useful business insights.
+				Sales Data:
 
-                Sales Data:
-                Total Revenue: $%.2f
-                Total Orders: %d
-                Pending Orders: %d
-                Confirmed Orders: %d
-                Completed Orders: %d
-                Cancelled Orders: %d
-                Average Order Value: $%.2f
+				Total Revenue: $%.2f
+				Total Orders: %d
+				Pending Orders: %d
+				Confirmed Orders: %d
+				Completed Orders: %d
+				Cancelled Orders: %d
+				Average Order Value: $%.2f
 
-                Top Selling Cakes:
-                %s
+				Top Selling Cakes:
+				%s
 
-                Provide:
-                1. A short overall performance summary.
-                2. The strongest selling product.
-                3. Any concern or issue visible in the data.
-                4. Two practical recommendations for the bakery.
+				Create the report using these sections:
 
-                Keep the response concise and easy for a bakery administrator to understand.
-                Do not invent information that is not present in the data.
-                """.formatted(
-                    report.getTotalRevenue(),
-                    report.getTotalOrders(),
-                    report.getPendingOrders(),
-                    report.getConfirmedOrders(),
-                    report.getCompletedOrders(),
-                    report.getCancelledOrders(),
-                    report.getAverageOrderValue(),
-                    String.join(", ", report.getTopSellingCakes())
-                );
+				1. Overall Performance Summary
+				2. Strongest Selling Product
+				3. Concerns or Issues
+				4. Practical Recommendations
 
-        GenerateContentResponse response =
-                client.models.generateContent(
-                        "gemini-3.6-flash",
-                        prompt,
-                        null
-                );
+				Rules:
+				- Use ONLY the information provided.
+				- Do not invent numbers, customers, products, or events.
+				- Do not make assumptions that are not supported by the data.
+				- If there is not enough data to identify a trend, clearly say so.
+				- Keep the report concise.
+				- Write for a bakery administrator.
+				- Return plain text.
+				- Do not use Markdown formatting.
 
-        return response.text();
-    }
+				""".formatted(report.getTotalRevenue(), report.getTotalOrders(), report.getPendingOrders(),
+				report.getConfirmedOrders(), report.getCompletedOrders(), report.getCancelledOrders(),
+				report.getAverageOrderValue(), formatTopSellingCakes(report));
+
+		GenerateContentResponse response = client.models.generateContent("gemini-3.6-flash", prompt, null);
+
+		return response.text();
+	}
+
+	private String formatTopSellingCakes(AdminAIReportDTO report) {
+		if (report.getTopSellingCakes() == null || report.getTopSellingCakes().isEmpty()) {
+			return "No cake sales recorded.";
+		}
+
+		return String.join(",", report.getTopSellingCakes());
+	}
 
 }
