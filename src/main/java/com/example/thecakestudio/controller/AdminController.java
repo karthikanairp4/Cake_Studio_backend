@@ -1,5 +1,6 @@
 package com.example.thecakestudio.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -104,5 +105,10 @@ public class AdminController {
 	@GetMapping("/admin/ai/report")
 	public AdminAIReportDTO getAIReport() {
 	    return adminService.getAIReport();
+	}
+	
+	@GetMapping("/admin/ai/daily-report")
+	public AdminAIReportDTO getDailyReport(@RequestParam LocalDate date) {
+		return adminService.generateDailyReport(date);
 	}
 }

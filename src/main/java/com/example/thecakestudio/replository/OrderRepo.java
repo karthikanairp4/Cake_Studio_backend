@@ -39,6 +39,39 @@ public interface OrderRepo extends JpaRepository<Order, Integer> {
 	long countByStatus(OrderStatus status);
 
 	List<Order> findAllByOrderByOrderDateDesc();
+
+	List<Order> findByOrderDateGreaterThanEqualAndOrderDateLessThan(LocalDateTime start, LocalDateTime end);
+
+	@Query("""
+	        SELECT COUNT(o)
+	        FROM Order o
+	        WHERE o.orderDate >= :start
+	        AND o.orderDate < :end
+	        """)
+	long countDailyOrders(
+	        @Param("start") LocalDateTime start,
+	        @Param("end") LocalDateTime end
+	);
+
+	@Query("""
+	        SELECT COALESCE(SUM(o.totalAmount), 0)
+	        FROM Order o
+	        WHERE o.orderDate >= :start
+	        AND o.orderDate < :end
+	        AND o.status <> :cancelledStatus
+	        """)
+	Double getDailyRevenue(
+	        @Param("start") LocalDateTime start,
+	        @Param("end") LocalDateTime end,
+	        @Param("cancelledStatus") OrderStatus cancelledStatus
+	);
+
+	long countByOrderDateGreaterThanEqualAndOrderDateLessThanAndStatus(
+	        LocalDateTime start,
+	        LocalDateTime end,
+	        OrderStatus status
+	);
+	
 }
 
 

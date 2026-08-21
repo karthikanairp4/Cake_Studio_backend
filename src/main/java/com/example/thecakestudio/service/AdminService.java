@@ -133,5 +133,39 @@ public class AdminService {
 	    );
 	}
 	
+	public AdminAIReportDTO generateDailyReport(LocalDate date) {
+		LocalDateTime start = date.atStartOfDay();
+		LocalDateTime end = date.plusDays(1).atStartOfDay();
+		long totalOrders = orderRepo.countDailyOrders(start, end);
+		Double totalRevenue = orderRepo.getDailyRevenue(start, end, OrderStatus.CANCELLED);
+		if (totalRevenue == null) {
+			totalRevenue = 0.0;
+		}
+
+		long pendingOrders = orderRepo.countByOrderDateGreaterThanEqualAndOrderDateLessThanAndStatus(start, end,
+				OrderStatus.PENDING);
+		long confirmedOrders = orderRepo.countByOrderDateGreaterThanEqualAndOrderDateLessThanAndStatus(start, end,
+				OrderStatus.CONFIRMED);
+		long completedOrders = orderRepo.countByOrderDateGreaterThanEqualAndOrderDateLessThanAndStatus(start, end,
+				OrderStatus.COMPLETED);
+		long cancelledOrders = orderRepo.countByOrderDateGreaterThanEqualAndOrderDateLessThanAndStatus(start, end,
+				OrderStatus.CANCELLED);
+		Double averageOrderValue = 0.0;
+		if (totalOrders > 0) {
+			averageOrderValue = totalRevenue / totalOrders;
+		}
+
+		List<Object[]> results = orderItemRepo.findTopSellingCakesForDay(start, end);
+		List<String> topSellingCakes = new ArrayList<>();
+		for (Object[] row : results) {
+			String cakeName = (String) row[0];
+			Number quantity = (Number) row[1];
+			topSellingCakes.add(cakeName + " - " + quantity.intValue() + " orders");
+		}
+
+		return new AdminAIReportDTO(totalRevenue, totalOrders, pendingOrders, confirmedOrders, completedOrders,
+				cancelledOrders, averageOrderValue, topSellingCakes);
+	}
+	
 	
 }
