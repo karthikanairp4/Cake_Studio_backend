@@ -62,9 +62,9 @@ public class PDFService {
 			// SALES SUMMARY
 			// ==========================================
 			y = writeHeading(content, headingFont, "Sales Summary", y);
-			y = writeLine(content, normalFont, "Total Revenue: ₹" + formatMoney(report.getTotalRevenue()), y);
+			y = writeLine(content, normalFont, "Total Revenue: Rs." + formatMoney(report.getTotalRevenue()), y);
 			y = writeLine(content, normalFont, "Total Orders: " + report.getTotalOrders(), y);
-			y = writeLine(content, normalFont, "Average Order Value: ₹" + formatMoney(report.getAverageOrderValue()),
+			y = writeLine(content, normalFont, "Average Order Value: Rs." + formatMoney(report.getAverageOrderValue()),
 					y);
 
 			y -= 10;
