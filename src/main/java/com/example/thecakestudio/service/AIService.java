@@ -63,7 +63,7 @@ public class AIService {
 				report.getConfirmedOrders(), report.getCompletedOrders(), report.getCancelledOrders(),
 				report.getAverageOrderValue(), formatTopSellingCakes(report));
 
-		GenerateContentResponse response = client.models.generateContent("gemini-3.6-flash", prompt, null);
+		GenerateContentResponse response = client.models.generateContent("gemini-3.5-flash-lite", prompt, null);
 
 		return response.text();
 	}
